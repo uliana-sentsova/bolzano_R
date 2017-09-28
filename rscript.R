@@ -132,7 +132,7 @@ text(x=36, y=2.1, "two standard deviations", col="red")
 text(student.distances[order(student.distances$distance),1]+0.1,
      labels = rownames(student.distances[order(student.distances$distance),]), cex=0.7)
 #    ... or outlier only
-text(x=18, y = 3.25, "#18", col="navy")
+text(x=18, y = 3.25, labels = "18", col="black",cex=0.8)
 # ---------------------------
 
 # Simple plot
@@ -153,7 +153,7 @@ text(x=33, y=2.1, "two standard deviations", col="red")
 text(student.distances$distance+0.1,
      labels = rownames(student.distances), cex=0.7)
 #    ... or outlier only
-text(x=18, y = 3.25, "#18", col="navy")
+text(x=18, y = 3.25, labels = "18", col="black",cex=0.8)
 # ---------------------------
 
 # Students that are different by two standard deviations:
@@ -199,7 +199,7 @@ text(student.distances.2[order(student.distances.2$distance),1]+0.1,
      labels = rownames(student.distances.2[order(student.distances.2$distance),]),
      cex=0.7)
 #    ... or outlier only
-text(x=18, y = 3.25, "#18", col="navy")
+text(x=18, y = 3.25, labels = "18", col="black",cex=0.8)
 # ---------------------------
 
 # Simple plot
@@ -220,7 +220,7 @@ text(x=33, y=2.1, "two standard deviations", col="red")
 text(student.distances.2$distance+0.1,
      labels = rownames(student.distances.2), cex=0.7)
 #    ... or outlier only
-text(x=18, y = 2.8, "18", col="navy")
+text(x=18, y = 2.8, "18", col="black",cex=0.8)
 # ---------------------------
 
 # Students that are different by two standard deviations:
