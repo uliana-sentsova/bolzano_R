@@ -30,6 +30,7 @@ colnames(sentence.preposition) <- prep.names
 
 
 # Normalization
+
 for (i in 1:length(student.preposition[,1])){
         student.preposition[i,] <- round(student.preposition[i,]/sum(student.preposition[i,]),4)
 }
@@ -37,6 +38,7 @@ for (i in 1:length(student.preposition[,1])){
 for (i in 1:length(sentence.preposition[,1])){
         sentence.preposition[i,] <- round(sentence.preposition[i,]/sum(sentence.preposition[i,]),4)
 }
+
 
 
 # ========================================
@@ -232,4 +234,25 @@ student.distances.2[which((student.distances.2$distance - mean(student.distances
 # Scale for students
 student.scale.2 <- student.distances.2[order(student.distances.2$distance),2]
 student.scale.2
+
+
+# -------- IMPURITY MEASURES -----
+
+gini = function(prob) {
+        coef <- 0
+        for (i in 1:length(prob)) { coef <- coef + (prob[,i])^2}
+        return(1 - coef)
+}
+
+gini.coefs <- vector(mode="numeric")
+
+for (i in 1:46) {
+        gini.coefs[i] <- gini(student.preposition[i,])
+}
+gini.coefs <- as.data.frame(gini.coefs)
+row.names(gini.coefs) <- row.names(student.preposition)
+gini.coefs$names <- row.names(student.preposition)
+colnames(gini.coefs) <- "gini"
+gini.coefs[order(gini.coefs$gini),2]
+
 
