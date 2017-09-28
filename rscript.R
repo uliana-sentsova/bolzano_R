@@ -215,7 +215,7 @@ text(x=3, y=0.1, "mean", col="green")
 text(x=33, y=2.1, "two standard deviations", col="red")
 
 
-# --- Display student's labels ---
+# --- Display students' labels ---
 # either all students ...
 text(student.distances.2$distance+0.1,
      labels = rownames(student.distances.2), cex=0.7)
