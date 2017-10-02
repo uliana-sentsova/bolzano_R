@@ -70,7 +70,8 @@ text(my_bar, bars + 0.01, paste("",round(bars,3),sep="") ,cex=0.7, col="black")
 
 # ==== CORRELATION ====
 # Correlation (preposition from the whole table vs. corpus data)
-cor(as.numeric(corpus.distr[1,]), as.numeric(experimental.distr[1,]), method="spearman")
+
+cor.test(as.numeric(corpus.distr[1,]), as.numeric(experimental.distr[1,]), method="spearman")
 
 # Correlation (professional translation vs. corpus data)
 professional <- as.numeric(student.preposition[1,])
@@ -98,8 +99,28 @@ text(my_bar, bars + 0.01, paste("",round(bars,3),sep="") ,cex=0.7, col="black")
 # ---------------------------
 
 
-# ==== STUDENTS ====
+# Distribution of errors
+error.distr <- read.csv("errors.txt")
+colnames(error.distr) <- c("in", "on", "syn", "with", "at", "from", "among")
 
+names <- intersect(colnames(corpus.distr.restr), colnames(error.distr))
+error.distr <- error.distr[, which(colnames(error.distr) %in% names)]
+
+corpus.distr.restr <- corpus.distr[, which(colnames(corpus.distr) %in% names)]
+
+
+# Correlation between students' mistakes and corpus
+cor.test(as.numeric(corpus.distr.restr[1,]), as.numeric(error.distr[1,]), method="spearman")
+corpus.vs.errors <- rbind(corpus.distr.restr, error.distr)
+rownames(corpus.vs.errors) <- c("corpus data", "error distribution")
+
+colnames(corpus.vs.errors) <- prep.names
+
+barplot(as.matrix(error.distr), horiz=T, xlim=c(0, 0.9),
+        main="Distribution of learner errors", las=1, xlab = "Probabilities")
+
+
+# ==== STUDENTS ====
 
 # Distance: comparing students to corpus data
 distance <- vector(mode="double")
@@ -236,6 +257,9 @@ student.scale.2 <- student.distances.2[order(student.distances.2$distance),2]
 student.scale.2
 
 
+
+
+
 # -------- IMPURITY MEASURES -----
 
 gini = function(prob) {
@@ -254,5 +278,4 @@ row.names(gini.coefs) <- row.names(student.preposition)
 gini.coefs$names <- row.names(student.preposition)
 colnames(gini.coefs) <- "gini"
 gini.coefs[order(gini.coefs$gini),2]
-
 
