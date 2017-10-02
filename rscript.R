@@ -104,21 +104,23 @@ error.distr <- read.csv("errors.txt")
 colnames(error.distr) <- c("in", "on", "syn", "with", "at", "from", "among")
 
 names <- intersect(colnames(corpus.distr.restr), colnames(error.distr))
+names <- c(names, "among")
 error.distr <- error.distr[, which(colnames(error.distr) %in% names)]
 
 corpus.distr.restr <- corpus.distr[, which(colnames(corpus.distr) %in% names)]
-
+corpus.distr.restr[, "among"] <- 0.000001
 
 # Correlation between students' mistakes and corpus
 cor.test(as.numeric(corpus.distr.restr[1,]), as.numeric(error.distr[1,]), method="spearman")
 corpus.vs.errors <- rbind(corpus.distr.restr, error.distr)
 rownames(corpus.vs.errors) <- c("corpus data", "error distribution")
-
-colnames(corpus.vs.errors) <- prep.names
+colnames(corpus.vs.errors) <- colnames(error.distr)
 
 barplot(as.matrix(error.distr), horiz=T, xlim=c(0, 0.9),
-        main="Distribution of learner errors", las=1, xlab = "Probabilities")
+        main="Prepositions in learner errors", las=1, xlab = "Probabilities")
 
+barplot(as.matrix(corpus.distr.restr), horiz=T, xlim=c(0, 0.9),
+        main="Prepositions in corpus", las=1, xlab = "Probabilities")
 
 # ==== STUDENTS ====
 
