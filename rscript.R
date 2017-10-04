@@ -1,4 +1,5 @@
 setwd("~/Desktop/Bolzano/LCR2017/data")
+library(stringr)
 
 prep.names <- c("in", "null", "on", "with", "at","to","by", "from", "through", "inside", "for")
 
@@ -100,27 +101,37 @@ text(my_bar, bars + 0.01, paste("",round(bars,3),sep="") ,cex=0.7, col="black")
 
 
 # Distribution of errors
-error.distr <- read.csv("errors.txt")
-colnames(error.distr) <- c("in", "on", "syn", "with", "at", "from", "among")
 
-names <- intersect(colnames(corpus.distr.restr), colnames(error.distr))
-names <- c(names, "among")
-error.distr <- error.distr[, which(colnames(error.distr) %in% names)]
+names <- c("in", "on", "with", "at", "from", "among")
+
+error.distr <- c(83, 11, 13, 2, 4, 1)/101
 
 corpus.distr.restr <- corpus.distr[, which(colnames(corpus.distr) %in% names)]
 corpus.distr.restr[, "among"] <- 0.000001
 
 # Correlation between students' mistakes and corpus
-cor.test(as.numeric(corpus.distr.restr[1,]), as.numeric(error.distr[1,]), method="spearman")
-corpus.vs.errors <- rbind(corpus.distr.restr, error.distr)
+cor.test(as.numeric(corpus.distr.restr[1,]), as.numeric(error.distr), method="spearman")
+corpus.vs.errors <- rbind(error.distr, corpus.distr.restr)
 rownames(corpus.vs.errors) <- c("corpus data", "error distribution")
 colnames(corpus.vs.errors) <- colnames(error.distr)
 
-barplot(as.matrix(error.distr), horiz=T, xlim=c(0, 0.9),
-        main="Prepositions in learner errors", las=1, xlab = "Probabilities")
+par(mfrow=c(1,2))
 
-barplot(as.matrix(corpus.distr.restr), horiz=T, xlim=c(0, 0.9),
-        main="Prepositions in corpus", las=1, xlab = "Probabilities")
+barplot(as.matrix(corpus.distr.restr), horiz=T, xlim=c(0, 0.9),col="grey70",
+        main="(corpus)", las=1, xlab = "Probabilities")
+
+barplot(as.matrix(error.distr), horiz=T, xlim=c(0, 0.9), col="grey20",
+        main="(learner errors)", las=1, xlab = "Probabilities")
+par(mfrow=c(1,1))
+
+barplot(as.matrix(corpus.vs.errors), horiz=T, beside=T, xlim=c(0, 0.85),
+        main="Erroneous prepositions", las=1, xlab = "Probabilities",
+        col=c("grey20", "grey70"))
+
+legend("topright", legend = c("Corpus data","Experimental data" ), col=c("grey20", "grey70"),  
+       bty = "o", pch=15 , pt.cex = 2, cex = 1, horiz = FALSE, xjust=1, yjust=1)
+
+
 
 # ==== STUDENTS ====
 
